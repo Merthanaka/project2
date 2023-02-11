@@ -1,0 +1,56 @@
+using System;
+
+namespace LinearEquationSolver
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter the number of equations and variables:");
+            int n = Convert.ToInt32(Console.ReadLine());
+
+            double[,] matrix = new double[n, n + 1];
+
+            Console.WriteLine("Enter the augmented matrix row by row:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    matrix[i, j] = Convert.ToDouble(Console.ReadLine());
+                }
+            }
+
+            
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    double factor = matrix[j, i] / matrix[i, i];
+                    for (int k = i; k <= n; k++)
+                    {
+                        matrix[j, k] -= factor * matrix[i, k];
+                    }
+                }
+            }
+
+            
+            double[] solutions = new double[n];
+            for (int i = n - 1; i >= 0; i--)
+            {
+                solutions[i] = matrix[i, n];
+                for (int j = i + 1; j < n; j++)
+                {
+                    solutions[i] -= matrix[i, j] * solutions[j];
+                }
+                solutions[i] /= matrix[i, i];
+            }
+
+            Console.WriteLine("The solutions are:");
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("x" + (i + 1) + " = " + solutions[i]);
+            }
+        }
+    }
+}
+
